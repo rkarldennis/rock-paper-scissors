@@ -1,104 +1,89 @@
-// console.log('Hello World')
-
 humanScore = 0;
 computerScore = 0;
+const maxRound = 5;
+let currRound = 0;
+
+const resultText = document.querySelector('.result')
+const game_over = document.querySelector('.game-over')
+const roundText = document.querySelector('.number')
+const humanScoreboard = document.querySelector('.human-score')
+const computerScoreboard = document.querySelector('.computer-score')
+const restartText = document.querySelector('.round-text')
+const rockButton = document.querySelector('.rock')
+const paperButton = document.querySelector('.paper')
+const scissorButton = document.querySelector('.scissor')
+const restartButton = document.querySelector('.restart-button');
+// const gameButton = document.querySelector('.btn')
 
 const getComputerChoice = () => {
-    let computerAnswer = Math.floor(Math.random() * 3) //choose random int from 0 to 2
-    // if (computerAnswer === 0) {
-    //     computerAnswer = 'rock'
-    // }
-    // else if(computerAnswer === 1){
-    //     computerAnswer = 'paper'
-    // }
-    // else{
-    //     computerAnswer = 'scissor'
-    // }
-    return computerAnswer
+    let computerAnswer = ['rock', 'paper', 'scissor']
+    return computerAnswer[Math.floor(Math.random() * 3)]
 }
-
-const getHumanChoice = () => {
-    let answer = prompt('Pick between Rock, Paper, and Scissors');
-    return answer.toLowerCase();
-}
-// const userChoice = humanChoice()
-// console.log(userChoice)
 
 const playRound = (humanChoice, computerChoice) => {
-    switch (humanChoice) {
-        case 'rock':
-            if (computerChoice === 0) {
-                console.log('Tied')
-            }
-            else if (computerChoice === 1) {
-                console.log('You Lose')
-                computerScore++
-                console.log('Computer Score ' + computerScore)
-                console.log('Human Score ' + humanScore)
-            }
-            else {
-                console.log('You Win')
-                humanScore++
-                console.log('Computer Score ' + computerScore)
-                console.log('Human Score ' + humanScore)
-            }
-            break;
-        case 'paper':
-            if (computerChoice === 0) {
-                console.log('You Win')
-                humanScore++
-                console.log('Computer Score ' + computerScore)
-                console.log('Human Score ' + humanScore)
-            }
-            else if (computerChoice === 1) {
-                console.log('Tied')
-            }
-            else {
-                console.log('You Lose')
-                computerScore++
-                console.log('Computer Score ' + computerScore)
-                console.log('Human Score ' + humanScore)
-            }
-            break;
-        case 'scissor':
-            if (computerChoice === 0) {
-                console.log('You Lose')
-                computerScore++
-                console.log('Computer Score ' + computerScore)
-                console.log('Human Score ' + humanScore)
-            }
-            else if (computerChoice === 1) {
-                console.log('You Win')
-                humanScore++
-                console.log('Computer Score ' + computerScore)
-                console.log('Human Score ' + humanScore)
-
-            }
-            else {
-                console.log('Tied')
-            }
-            break;
+    if (humanChoice === computerChoice) {
+        resultText.textContent = 'Tied'
+        return
     }
-}
-
-const playGame = () => {
-    const maxRound = 5;
-    for (i = 1; i <= maxRound; i++) {
-        console.log('Round ' + i)
-        const computerSelection = getComputerChoice()
-        const humanSelection = getHumanChoice()
-        playRound(humanSelection, computerSelection)
-    }
-
-    if (humanScore == 3) {
-        console.log('Human Win')
-    }
-    else if (computerScore == 3) {
-        console.log('Computer Win')
+    else if (humanChoice === 'rock' && computerChoice === 'scissor' || humanChoice === 'paper' && computerChoice === 'rock' ||
+        humanChoice === 'scissor' && computerChoice === 'paper') {
+        resultText.textContent = 'You Win';
+        return 'human'
     }
     else {
-        console.log('Tied')
+        resultText.textContent = 'Computer Win'
+        return 'computer'
+    }
+
+}
+
+const playGame = (humanChoice) => {
+
+    currRound++
+    roundText.textContent = currRound;
+    const computerSelection = getComputerChoice()
+    let points = playRound(humanChoice, computerSelection)
+    if (points === 'human') {
+        humanScore++
+        console.log(humanScore)
+    }
+    else if (points === 'computer') {
+        computerScore++
+        console.log(computerScore)
+    }
+
+    humanScoreboard.textContent = humanScore;
+    computerScoreboard.textContent = computerScore;
+
+    if (currRound === maxRound) {
+        if (humanScore > computerScore) {
+            game_over.textContent = 'Game Over! You Win!'
+        }
+        else if (computerScore > humanScore) {
+            game_over.textContent = 'Game Over! Computer Win!'
+        }
+        else {
+            game_over.textContent = 'Game Over! Tied!'
+        }
+        rockButton.disabled = true;
+        paperButton.disabled = true;
+        scissorButton.disabled = true;
     }
 }
 
-playGame()
+const restart = () => {
+    // Reset game state
+    currRound = 0;
+    humanScore = 0;
+    computerScore = 0;
+
+    // Update the DOM to reflect the reset state
+    roundText.textContent = currRound;
+    humanScoreboard.textContent = humanScore;
+    computerScoreboard.textContent = computerScore;
+    resultText.textContent = ''; // Clear result text
+    game_over.textContent = ''; // Clear game-over text
+    rockButton.disabled = false;
+    paperButton.disabled = false;
+    scissorButton.disabled = false;
+}

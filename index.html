@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <script src="./script.js"></script>
+    <div class="container">
+        <div class="round">
+            <p class="round-text">Round <span class="number"></span></p>
+        </div>
+        <div class="score-container">
+            <p class="human-scoreboard">
+                Human: 
+                <span class="human-score"></span>
+            </p>
+            <p class="computer-scoreboard">
+                Computer: 
+                <span class="computer-score"></span>
+            </p>
+        </div>
+        <div class="btns">
+            <button class="btn rock" onclick="playGame('rock')">✊</button>
+            <button class="btn paper" onclick="playGame('paper')">🤚</button>
+            <button class="btn scissor" onclick="playGame('scissor')">✌</button>
+        </div>
+        <div class="result-div">
+            <p class="result"></p>
+            <p class="game-over"></p>
+        </div>
+        <button class="restart-button" onclick="restart()">Restart Game</button>
+    </div>
 </body>
 </html>
